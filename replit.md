@@ -122,3 +122,8 @@ Preferred communication style: Simple, everyday language.
 
 Changelog:
 - July 03, 2025. Initial setup
+- July 03, 2025. Fixed app startup by adding required API keys and resolving auth hook JSX syntax error
+
+## Known Issues
+
+- Google OAuth provider needs to be enabled in Supabase dashboard for authentication to work
