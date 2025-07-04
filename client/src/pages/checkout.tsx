@@ -162,24 +162,32 @@ export default function Checkout() {
   }, []);
 
   useEffect(() => {
-    if (!isLoading) {
-      if (!user) {
-        setLocation('/');
-        return;
-      }
+    if (!user) {
+      // Wait a bit for auth to load, then redirect if still no user
+      const timer = setTimeout(() => {
+        if (!user) {
+          setLocation('/');
+        }
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
 
-      if (appUser?.hasPaid) {
-        setLocation('/app');
-        return;
-      }
+    if (appUser?.hasPaid) {
+      setLocation('/app');
+      return;
+    }
 
+    if (user && !orderData) {
       // Create Razorpay order
+      console.log('Creating payment order for user:', user.id);
       apiRequest("POST", "/api/create-payment-order", {})
         .then((res) => res.json())
         .then((data) => {
+          console.log('Payment order created:', data);
           setOrderData(data);
         })
         .catch((error) => {
+          console.error('Payment order error:', error);
           toast({
             title: "Error",
             description: "Failed to initialize payment. Please try again.",
@@ -188,14 +196,14 @@ export default function Checkout() {
           setLocation('/');
         });
     }
-  }, [user, appUser, isLoading, setLocation, toast]);
+  }, [user, appUser, orderData, setLocation, toast]);
 
-  if (isLoading || !user) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-dark flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto mb-4" />
-          <p className="text-slate-400">Loading...</p>
+          <p className="text-slate-400">Loading user data...</p>
         </div>
       </div>
     );
