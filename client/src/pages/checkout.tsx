@@ -42,8 +42,6 @@ const CheckoutForm = ({ orderData }: { orderData: any }) => {
               paymentId: response.razorpay_payment_id,
               orderId: response.razorpay_order_id,
               signature: response.razorpay_signature
-            }, {
-              'x-supabase-user-id': user.id
             });
 
             await refreshUser();
@@ -176,9 +174,7 @@ export default function Checkout() {
       }
 
       // Create Razorpay order
-      apiRequest("POST", "/api/create-payment-order", {}, {
-        'x-supabase-user-id': user.id
-      })
+      apiRequest("POST", "/api/create-payment-order", {})
         .then((res) => res.json())
         .then((data) => {
           setOrderData(data);
