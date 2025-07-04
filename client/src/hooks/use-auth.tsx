@@ -1,10 +1,12 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { supabase, type AuthUser } from '@/lib/auth';
+import { supabase } from '@/lib/auth'; // No need to import type AuthUser
 import { apiRequest } from '@/lib/queryClient';
 import type { User } from '@shared/schema';
+import type { User as SupabaseUser } from '@supabase/supabase-js';
 
+// 🔐 Define context shape
 interface AuthContextType {
-  user: AuthUser | null;
+  user: SupabaseUser | null;
   appUser: User | null;
   isLoading: boolean;
   signInWithGoogle: () => Promise<void>;
@@ -15,62 +17,90 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<AuthUser | null>(null);
+  const [user, setUser] = useState<SupabaseUser | null>(null);
   const [appUser, setAppUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const createOrGetAppUser = async (authUser: AuthUser) => {
+  // 🔁 Create or fetch app-specific user
+  const createOrGetAppUser = async (authUser: SupabaseUser) => {
     try {
       const response = await apiRequest('POST', '/api/user', {
         email: authUser.email,
-        username: authUser.user_metadata.full_name || authUser.email.split('@')[0],
+        username:
+          authUser.user_metadata?.full_name || authUser.email?.split('@')[0],
         supabaseId: authUser.id,
       });
       const userData = await response.json();
       setAppUser(userData);
     } catch (error) {
-      console.error('Error creating/getting app user:', error);
+      console.error('❌ Error creating/getting app user:', error);
     }
   };
 
+  // 🔄 Refresh user from Supabase session
   const refreshUser = async () => {
+    console.log('🔁 refreshUser triggered');
+    setIsLoading(true);
     try {
-      const { data: { user: authUser } } = await supabase.auth.getUser();
+      const { data, error } = await supabase.auth.getUser();
+      if (error) throw error;
+
+      const authUser = data.user;
+      console.log('✅ Supabase user fetched:', authUser);
+
       if (authUser) {
         setUser(authUser);
-        await createOrGetAppUser(authUser);
+        if (authUser.email) {
+          await createOrGetAppUser(authUser);
+        } else {
+          console.warn('⚠️ Missing email on user');
+          setAppUser(null);
+        }
       } else {
+        console.warn('⚠️ No user returned');
         setUser(null);
         setAppUser(null);
       }
     } catch (error) {
-      console.error('Error refreshing user:', error);
+      console.error('❌ Error refreshing user:', error);
       setUser(null);
       setAppUser(null);
     } finally {
+      console.log('🎉 Done loading');
       setIsLoading(false);
     }
   };
 
+  // 📡 Setup listener for auth changes
   useEffect(() => {
+    console.log('🌀 useEffect → refreshUser + subscribe to auth changes');
     refreshUser();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        console.log('⚡ Auth event:', event);
+
         if (event === 'SIGNED_IN' && session?.user) {
           setUser(session.user);
-          await createOrGetAppUser(session.user);
+          if (session.user.email) {
+            await createOrGetAppUser(session.user);
+          }
         } else if (event === 'SIGNED_OUT') {
           setUser(null);
           setAppUser(null);
         }
-        setIsLoading(false);
+
+        // ❌ DO NOT update isLoading here
       }
     );
 
-    return () => subscription.unsubscribe();
+    return () => {
+      console.log('🧹 Cleanup auth subscription');
+      subscription.unsubscribe();
+    };
   }, []);
 
+  // 🔐 Google login
   const signInWithGoogle = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
@@ -78,17 +108,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         redirectTo: `${window.location.origin}/auth`,
       },
     });
-    
-    if (error) {
-      throw error;
-    }
+
+    if (error) throw error;
   };
 
+  // 🚪 Logout
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
-    if (error) {
-      throw error;
-    }
+    if (error) throw error;
     setUser(null);
     setAppUser(null);
   };
@@ -109,6 +136,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
+// 🪝 Hook to access auth context
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
