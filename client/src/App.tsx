@@ -21,11 +21,11 @@ function Router() {
       <Route path="/auth" component={Auth} />
       <Route path="/checkout" component={Checkout} />
       <Route path="/app" component={App} />
-      <Route component={NotFound} />
       <Route path="/terms" component={Terms} />
 <Route path="/privacy" component={Privacy} />
 <Route path="/refund" component={Refund} />
 <Route path="/contact" component={Contact} />
+<Route component={NotFound} />
     </Switch>
   );
 }
