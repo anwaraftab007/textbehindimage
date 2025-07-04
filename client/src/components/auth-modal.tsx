@@ -62,7 +62,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
               <div className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center mx-auto mb-4">
                 <LogIn className="text-white text-2xl" />
               </div>
-              <h3 className="text-2xl font-bold mb-2 text-white">Welcome to TextBehind</h3>
+              <h3 className="text-2xl font-bold mb-2 text-white">Welcome to BakTXT</h3>
               <p className="text-slate-400">Sign in to access the editor and create stunning designs</p>
             </div>
 

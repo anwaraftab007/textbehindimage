@@ -32,7 +32,7 @@ const CheckoutForm = ({ orderData }: { orderData: any }) => {
         key: orderData.keyId,
         amount: orderData.amount,
         currency: orderData.currency,
-        name: 'TextBehind',
+        name: 'BakTXT',
         description: 'Lifetime Access to Text Behind Image Editor',
         order_id: orderData.orderId,
         handler: async function (response: any) {
@@ -48,7 +48,7 @@ const CheckoutForm = ({ orderData }: { orderData: any }) => {
             
             toast({
               title: "Payment Successful!",
-              description: "Welcome to TextBehind! Redirecting to the app...",
+              description: "Welcome to BakTXT! Redirecting to the app...",
             });
 
             setTimeout(() => {
@@ -101,7 +101,7 @@ const CheckoutForm = ({ orderData }: { orderData: any }) => {
         <div className="space-y-6">
           <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
             <div className="flex justify-between items-center mb-3">
-              <span className="text-white font-semibold">TextBehind Lifetime Access</span>
+              <span className="text-white font-semibold">BakTXT Lifetime Access</span>
               <span className="text-2xl font-bold text-white">₹299</span>
             </div>
             <ul className="text-sm text-slate-400 space-y-1">

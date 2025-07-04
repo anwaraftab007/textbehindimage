@@ -54,7 +54,7 @@ export default function PaymentModal({ isOpen, onClose }: PaymentModalProps) {
             <div className="space-y-4 mb-6">
               <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
                 <div className="flex justify-between items-center">
-                  <span className="text-white">TextBehind Lifetime Access</span>
+                  <span className="text-white">BakTXT Lifetime Access</span>
                   <span className="font-bold text-white">₹299</span>
                 </div>
                 <ul className="text-sm text-slate-400 mt-2 space-y-1">

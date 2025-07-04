@@ -49,7 +49,7 @@ export default function Landing() {
             <div className="flex items-center space-x-2">
               <Layers className="text-primary text-2xl" />
               <span className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                TextBehind
+                BakTXT
               </span>
             </div>
             <div className="hidden md:flex items-center space-x-8">
@@ -173,7 +173,7 @@ export default function Landing() {
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
               Why choose{' '}
               <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                TextBehind?
+                BakTXT?
               </span>
             </h2>
             <p className="text-xl text-slate-400 max-w-2xl mx-auto">
@@ -339,32 +339,48 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-12 border-t border-slate-700/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <div className="flex items-center justify-center space-x-2 mb-4">
-              <Layers className="text-primary text-2xl" />
-              <span className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                TextBehind
-              </span>
-            </div>
-            <p className="text-slate-400 mb-6">Create stunning text-behind-image designs with ease</p>
-            <div className="flex justify-center space-x-6 mb-8">
-              <a href="#" className="text-slate-400 hover:text-white transition-colors">
-                <Twitter className="h-6 w-6" />
-              </a>
-              <a href="#" className="text-slate-400 hover:text-white transition-colors">
-                <Instagram className="h-6 w-6" />
-              </a>
-              <a href="#" className="text-slate-400 hover:text-white transition-colors">
-                <Github className="h-6 w-6" />
-              </a>
-            </div>
-            <p className="text-slate-500 text-sm">2025 © TextBehind - All Rights Reserved</p>
-          </div>
-        </div>
-      </footer>
+{/* Footer */}
+<footer className="py-12 border-t border-slate-700/50">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="text-center">
+      <div className="flex items-center justify-center space-x-2 mb-4">
+        <Layers className="text-primary text-2xl" />
+        <span className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+          BakTXT
+        </span>
+      </div>
+
+      <p className="text-slate-400 mb-6">
+        Create stunning text-behind-image designs with ease
+      </p>
+
+      <div className="flex justify-center space-x-6 mb-4">
+        <a href="#" className="text-slate-400 hover:text-white transition-colors">
+          <Twitter className="h-6 w-6" />
+        </a>
+        <a href="#" className="text-slate-400 hover:text-white transition-colors">
+          <Instagram className="h-6 w-6" />
+        </a>
+        <a href="#" className="text-slate-400 hover:text-white transition-colors">
+          <Github className="h-6 w-6" />
+        </a>
+      </div>
+
+      {/* ✅ Policy Links */}
+      <div className="flex justify-center space-x-4 mb-6 text-sm text-slate-500">
+        <a href="/terms" className="hover:text-white transition-colors">Terms</a>
+        <a href="/privacy" className="hover:text-white transition-colors">Privacy</a>
+        <a href="/refund" className="hover:text-white transition-colors">Refund</a>
+        <a href="/contact" className="hover:text-white transition-colors">Contact</a>
+      </div>
+
+      <p className="text-slate-500 text-sm">
+        2025 © BakTXT - All Rights Reserved
+      </p>
+    </div>
+  </div>
+</footer>
+
 
       {/* Modals */}
       <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
