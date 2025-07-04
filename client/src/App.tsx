@@ -9,6 +9,10 @@ import Auth from "@/pages/auth";
 import Checkout from "@/pages/checkout";
 import App from "@/pages/app";
 import NotFound from "@/pages/not-found";
+import Terms from "@/pages/terms";
+import Privacy from "@/pages/privacy";
+import Refund from "@/pages/refund";
+import Contact from "@/pages/contact";
 
 function Router() {
   return (
@@ -18,6 +22,10 @@ function Router() {
       <Route path="/checkout" component={Checkout} />
       <Route path="/app" component={App} />
       <Route component={NotFound} />
+      <Route path="/terms" component={Terms} />
+<Route path="/privacy" component={Privacy} />
+<Route path="/refund" component={Refund} />
+<Route path="/contact" component={Contact} />
     </Switch>
   );
 }
